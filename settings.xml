@@ -1,0 +1,8 @@
+<settings>
+    <servers> 
+        <server>
+            <id>github</id>
+            <password>${env.TOKEN}</password>
+        </server>
+    </servers>
+</settings>
