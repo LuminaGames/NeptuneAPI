@@ -21,32 +21,19 @@
  *
  */
 
-package io.github.vedantmulay.neptuneapi.bukkit;
+package io.github.vedantmulay.neptuneapi.bukkit.commands.subcommand;
 
-import org.bukkit.ChatColor;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.bukkit.command.CommandSender;
 
-public class Utils {
+public interface SubCommand {
 
-    public static String cc(String message) {
-        Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
-        Matcher matcher = pattern.matcher(message);
-        while (matcher.find()) {
-            String hexCode = message.substring(matcher.start(), matcher.end());
-            String replaceSharp = hexCode.replace('#', 'x');
+    boolean isPlayerOnly();
 
-            char[] ch = replaceSharp.toCharArray();
-            StringBuilder builder = new StringBuilder("");
-            for (char c : ch) {
-                builder.append("&" + c);
-            }
+    String getPermission();
 
-            message = message.replace(hexCode, builder.toString());
-            matcher = pattern.matcher(message);
-        }
-        return ChatColor.translateAlternateColorCodes('&', message);
-    }
+    String getSyntax();
+
+    void execute(CommandSender sender, String[] args);
 
 }

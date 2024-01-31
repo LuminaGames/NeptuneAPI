@@ -21,32 +21,19 @@
  *
  */
 
-package io.github.vedantmulay.neptuneapi.bukkit;
+package io.github.vedantmulay.neptuneapi.bungee.utils;
 
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+public class ProxyUtils {
 
-public class Utils {
-
-    public static String cc(String message) {
-        Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
-        Matcher matcher = pattern.matcher(message);
-        while (matcher.find()) {
-            String hexCode = message.substring(matcher.start(), matcher.end());
-            String replaceSharp = hexCode.replace('#', 'x');
-
-            char[] ch = replaceSharp.toCharArray();
-            StringBuilder builder = new StringBuilder("");
-            for (char c : ch) {
-                builder.append("&" + c);
-            }
-
-            message = message.replace(hexCode, builder.toString());
-            matcher = pattern.matcher(message);
+    public void globalAnnounce(String message) {
+        for(ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
+            player.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', message)));
         }
-        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
 }
