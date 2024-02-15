@@ -7,6 +7,7 @@ We make breaking changes in the API every time we add a new version cause we hat
 **The API supports spigot 1.12+**
 
 ## Maven Repository
+Here is our Maven Central Repository 
 
 ```
 <dependency>
