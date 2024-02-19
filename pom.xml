@@ -6,7 +6,7 @@
 
     <groupId>io.github.vedantmulay</groupId>
     <artifactId>NeptuneAPI</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.5</version>
     <packaging>jar</packaging>
 
     <name>NeptuneAPI</name>
@@ -67,17 +67,6 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.7</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

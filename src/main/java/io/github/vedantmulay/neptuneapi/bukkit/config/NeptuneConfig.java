@@ -29,6 +29,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -75,6 +77,24 @@ public class NeptuneConfig {
         }
     }
 
+    public void checkDefaults(JavaPlugin plugin, String name) {
+        // Load default configuration from resources
+        InputStream defaultConfigStream = plugin.getResource(name);
+        if (defaultConfigStream != null) {
+            YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultConfigStream));
+
+            // Check if each default value exists in the current configuration
+            for (String key : defaultConfig.getKeys(true)) {
+                if (!yaml.contains(key)) {
+                    // Copy default value to current configuration
+                    yaml.set(key, defaultConfig.get(key));
+                }
+            }
+            save();
+        } else {
+            plugin.getLogger().warning("Unable to find default configuration file: " + name);
+        }
+    }
 
     // Saves the configuration data
     public void save() {
