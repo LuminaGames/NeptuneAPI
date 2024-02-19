@@ -24,6 +24,9 @@
 package io.github.vedantmulay.neptuneapi.bungee.config;
 
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.config.Configuration;
+import net.md_5.bungee.config.ConfigurationProvider;
+import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.*;
 import java.nio.file.*;
@@ -33,10 +36,12 @@ import java.util.Map;
 public class NeptuneBungeeConfig {
 
     private final Plugin plugin;
-    private Map<String, Object> configData;
+    private Configuration config;
+    private final String name;
 
     public NeptuneBungeeConfig(String name, Plugin plugin) {
         this.plugin = plugin;
+        this.name = name;
         // Check if the config file exists, if not, create it
         File configFile = new File(plugin.getDataFolder(), name + ".yml");
         if (!configFile.exists()) {
@@ -47,12 +52,19 @@ public class NeptuneBungeeConfig {
                 plugin.getLogger().severe("Failed to create config file: " + e.getMessage());
             }
         }
+        loadConfig();
         copyDefaults(configFile);
     }
-
+    private void loadConfig() {
+        try {
+            config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(plugin.getDataFolder(), name + ".yml"));
+        } catch (IOException e) {
+            plugin.getLogger().severe("Failed to load config file: " + e.getMessage());
+        }
+    }
     private void copyDefaults(File configFile) {
         // Load default config from resources
-        InputStream defaultConfigStream = plugin.getResourceAsStream("config.yml");
+        InputStream defaultConfigStream = plugin.getResourceAsStream(name + ".yml");
         if (defaultConfigStream == null) {
             return;
         }
@@ -62,5 +74,9 @@ public class NeptuneBungeeConfig {
         } catch (IOException e) {
             plugin.getLogger().severe("Failed to copy default config file: " + e.getMessage());
         }
+    }
+
+    public Configuration getConfig() {
+        return config;
     }
 }
